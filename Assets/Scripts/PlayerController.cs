@@ -88,11 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.tag == "RespawnTrigger")
         {
-            Debug.Log("Other: " + other.name);
             Transform respawn = other.transform.Find("Respawn");
-            // Transform respawn = other.GetComponentInChildren<Transform>();
-            Debug.Log("respawn: " + respawn.name);
-
             ResetPlayer(respawn);
         }
     }
