@@ -72,10 +72,10 @@ public class PlayerController : MonoBehaviour
 
         }
         // Camera follow
-        if (mainCamera)
-        {
-            mainCamera.transform.position = new Vector3(t.position.x, t.position.y + 2.5f, cameraPos.z);
-        }
+        // if (mainCamera)
+        // {
+        //     mainCamera.transform.position = new Vector3(t.position.x, t.position.y + 2.5f, cameraPos.z);
+        // }
     }
 
     void FixedUpdate()
