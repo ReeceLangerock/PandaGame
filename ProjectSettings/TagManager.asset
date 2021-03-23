@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - RespawnTrigger
+  - Star
   layers:
   - Default
   - TransparentFX
