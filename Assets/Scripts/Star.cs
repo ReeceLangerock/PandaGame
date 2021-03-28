@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Star : MonoBehaviour
 {
-    float speed = .5f;
-
     [SerializeField] private Vector2 _start;
     [SerializeField] private Vector2 _end;
     Vector2 startPosition;
+    [SerializeField] private AudioClip collected;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private float _speed = 1f;
 
     // Start is called before the first frame update
@@ -28,7 +28,12 @@ public class Star : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        GameManager.Instance.IncrementStarsGathered();
-        Destroy(gameObject);
+        if (other.GetType() != typeof(CircleCollider2D))
+        {
+            bool isLastStar = gameObject.name == "LastStar";
+            audioSource.PlayOneShot(collected);
+            GameManager.Instance.IncrementStarsGathered(isLastStar);
+            Destroy(gameObject);
+        }
     }
 }

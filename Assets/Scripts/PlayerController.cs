@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     // Move player in 2D space
     public CharacterController2D controller2D;
+    public Animator animator;
     public float runSpeed = 40f;
-    public float jumpHeight = 40f;
     float horizontalMove = 0f;
     bool jump = false;
     bool crouch = false;
@@ -19,10 +19,15 @@ public class PlayerController : MonoBehaviour
     Vector3 cameraPos;
     Transform t;
     bool frozen = false;
+        [SerializeField] private AudioClip falling;
+    [SerializeField] private AudioSource audioSource;
+
 
     // Use this for initialization
     void Start()
     {
+        frozen = false;
+
         t = transform;
         if (mainCamera)
         {
@@ -35,47 +40,47 @@ public class PlayerController : MonoBehaviour
     {
         // Movement controls
 
-        horizontalMove = Input.GetAxisRaw("Horizontal");
-
         if (!frozen)
+            horizontalMove = Input.GetAxisRaw("Horizontal");
+
+        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+        // Change facing direction
+        if (moveDirection != 0)
+        {
+            if (moveDirection > 0 && !facingRight)
+            {
+                facingRight = true;
+                t.localScale = new Vector3(Mathf.Abs(t.localScale.x), t.localScale.y, transform.localScale.z);
+            }
+            if (moveDirection < 0 && facingRight)
+            {
+                facingRight = false;
+                t.localScale = new Vector3(-Mathf.Abs(t.localScale.x), t.localScale.y, t.localScale.z);
+            }
+        }
+
+        // Jumping
+        if (Input.GetButtonDown("Jump"))
         {
 
-            // Change facing direction
-            if (moveDirection != 0)
-            {
-                if (moveDirection > 0 && !facingRight)
-                {
-                    facingRight = true;
-                    t.localScale = new Vector3(Mathf.Abs(t.localScale.x), t.localScale.y, transform.localScale.z);
-                }
-                if (moveDirection < 0 && facingRight)
-                {
-                    facingRight = false;
-                    t.localScale = new Vector3(-Mathf.Abs(t.localScale.x), t.localScale.y, t.localScale.z);
-                }
-            }
+            jump = true;
+        animator.SetBool("isJumping", true);
+        }
 
-            // Jumping
-            if (Input.GetButtonDown("Jump"))
-            {
-                jump = true;
-            }
-
-            if (Input.GetButtonDown("Crouch"))
-            {
-                crouch = true;
-            }
-            else if (Input.GetButtonUp("Crouch"))
-            {
-                crouch = false;
-            }
+        if (Input.GetButtonDown("Crouch"))
+        {
+            crouch = true;
+        }
+        else if (Input.GetButtonUp("Crouch"))
+        {
+            crouch = false;
 
         }
-        // Camera follow
-        // if (mainCamera)
-        // {
-        //     mainCamera.transform.position = new Vector3(t.position.x, t.position.y + 2.5f, cameraPos.z);
-        // }
+    }
+
+    public void OnLanding(){
+        // Debug.Log("Onlanding");
+        animator.SetBool("isJumping", false);
     }
 
     void FixedUpdate()
@@ -89,15 +94,18 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "RespawnTrigger")
         {
             Transform respawn = other.transform.Find("Respawn");
-            ResetPlayer(respawn);
+            StartCoroutine(ResetPlayer(respawn));
         }
     }
 
-    public void ResetPlayer(Transform respawn)
+    public IEnumerator ResetPlayer(Transform respawn)
     {
-
+        audioSource.PlayOneShot(falling);
+        frozen = true;
+        horizontalMove = 0;
+        yield return StartCoroutine(SceneController.Instance.FadeOutAndIn(0f, 1.5f, .25f));
         controller2D.transform.position = respawn.position;
+        yield return new WaitForSeconds(1.75f);
+        frozen = false;
     }
-
-
 }

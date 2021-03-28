@@ -2,46 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
 
-    public TextMeshProUGUI text;
+    public TextMeshProUGUI StarsText;
+    public TextMeshProUGUI GameOverStarsText;
+    public GameObject GameOver;
     private int starsGathered;
     private int totalStars;
-    private int count;
-
-    void start(){
-        totalStars =  Resources.FindObjectsOfTypeAll(typeof(Star)).Length;
-        Debug.Log(totalStars);
-          var getCount = GameObject.FindGameObjectsWithTag ("Star");
-         count = getCount.Length;
-        Debug.Log(count);
+    [SerializeField] private AudioClip yay;
+    [SerializeField] private AudioSource audioSource;
 
 
+    void Start()
+    {
+        StartCoroutine(SceneController.Instance.FadeOutAndIn(0f, 0f, .65f));
+        totalStars = GameObject.FindGameObjectsWithTag("Star").Length;
     }
 
- 
-    public void IncrementStarsGathered()
+
+    public void IncrementStarsGathered(bool isLastStar)
     {
 
         starsGathered++;
         SetStarsText();
-        if(starsGathered >= 1){
+        if (isLastStar)
+        {
             HandleEndGame();
         }
     }
 
     private void SetStarsText()
     {
-        text.text = "Stars: " + starsGathered;
+        StarsText.text = "Stars: " + starsGathered;
 
     }
 
-    private void HandleEndGame(){
-Debug.Log("You did it!" + totalStars);
-Debug.Log("You did it!" + count);
+    private void HandleEndGame()
+    {
+        StarsText.enabled = false;
+        audioSource.Stop();
+        audioSource.PlayOneShot(yay);
+        GameOver.SetActive(true);
+        GameOverStarsText.text = starsGathered + " stars collected!";
+
     }
 
-    
+    public void PlayAgain()
+    {
+        StartCoroutine(SceneController.Instance.FadeOutAndIn(.25f, .75f, .5f));
+        SceneManager.LoadScene("Level1");
+
+    }
+
+
 }
