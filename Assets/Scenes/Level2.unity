@@ -1327,62 +1327,62 @@ Tilemap:
   - m_RefCount: 0
     m_Data:
       e00: 4e-45
-      e01: -0.0000033740143
+      e01: 9.100491e+28
       e02: 0
-      e03: 0
-      e10: 0
-      e11: 6.25e-43
-      e12: 6.24e-43
-      e13: 0
-      e20: 1.2111279e+30
+      e03: 4.115321e+24
+      e10: 4.5904e-41
+      e11: 6.9e-43
+      e12: 6.87e-43
+      e13: 4.5904e-41
+      e20: NaN
       e21: 0
       e22: 0
-      e23: 6.8751225
-      e30: 6.26e-43
+      e23: 6.2067757
+      e30: NaN
       e31: 0
       e32: 0
-      e33: 6.24e-43
+      e33: 6.87e-43
   - m_RefCount: 0
     m_Data:
-      e00: 0
-      e01: -5.944108e-32
-      e02: 1.6789055e-26
-      e03: -0.0000000025745397
-      e10: NaN
-      e11: 4.5905e-41
-      e12: 8.1e-43
-      e13: 8.09e-43
-      e20: 1.04e-43
-      e21: 1.6789314e-26
-      e22: -1.9157167e-26
-      e23: -1.9157167e-26
-      e30: 4.5905e-41
-      e31: 8.1e-43
-      e32: 3.15e-43
-      e33: 3.15e-43
+      e00: 4e-45
+      e01: 9.100491e+28
+      e02: 0
+      e03: 4.115321e+24
+      e10: 4.5904e-41
+      e11: 6.9e-43
+      e12: 6.87e-43
+      e13: 4.5904e-41
+      e20: NaN
+      e21: 0
+      e22: 0
+      e23: 5.899433
+      e30: NaN
+      e31: 0
+      e32: 0
+      e33: 6.87e-43
   - m_RefCount: 0
     m_Data:
       e00: NaN
-      e01: -5.944108e-32
-      e02: 1.6789055e-26
-      e03: -0.0000000032135663
+      e01: 1.4768109e+26
+      e02: 2.586259e-29
+      e03: 5.8993874
       e10: NaN
-      e11: 4.5905e-41
-      e12: 8.1e-43
-      e13: 8.09e-43
-      e20: 1.6789314e-26
-      e21: 1.6789314e-26
-      e22: -1.9157167e-26
-      e23: -1.9157167e-26
-      e30: 8.1e-43
-      e31: 8.1e-43
-      e32: 3.15e-43
-      e33: 3.15e-43
+      e11: 4.5904e-41
+      e12: 6.9e-43
+      e13: 6.87e-43
+      e20: 2.5863097e-29
+      e21: 2.5863097e-29
+      e22: 0.0000030804877
+      e23: 0.0000030804877
+      e30: 6.9e-43
+      e31: 6.9e-43
+      e32: 3e-45
+      e33: 3e-45
   m_TileColorArray:
   - m_RefCount: 0
     m_Data: {r: -9.318665e-17, g: -9.318665e-17, b: -9.318665e-17, a: -9.318665e-17}
   - m_RefCount: 0
-    m_Data: {r: -2.5573172e-29, g: -2.5573172e-29, b: -2.5573172e-29, a: -2.5573172e-29}
+    m_Data: {r: 2.586259e-29, g: 2.586259e-29, b: 2.586259e-29, a: 2.586259e-29}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7539,9 +7539,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71882f2d88a91f944bb795bb6a170af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topTile: {fileID: 11400000, guid: 3358380776cc0bd4d8027967970e8e07, type: 2}
-  middleTile: {fileID: 11400000, guid: b6483961defd0be459ff67a3c6ce0bb7, type: 2}
+  ruleTile: {fileID: 11400000, guid: 41220675e8939424f8316be1e4dc764d, type: 2}
   grid: {fileID: 1472730403}
+  starPrefab: {fileID: 8553951270721939149, guid: 5278ff30680ee6f41a43014c22cbb2ac, type: 3}
+  sliderPrefab: {fileID: 2651322850232357336, guid: e886ac8bac149b6448c65744e2200192, type: 3}
+  elevatorPrefab: {fileID: 7351340372960958530, guid: 0133ebf107ceb9544bb20561b9a5f6d8, type: 3}
+  boxPrefab: {fileID: 2038517722298376224, guid: f6a33a4c4e378aa428f6cc449cac679f, type: 3}
+  treePrefab1: {fileID: 8099450780998915691, guid: 78f18f596339e2f45b0a43d9ec31d9b1, type: 3}
+  treePrefab2: {fileID: 7217826949688232624, guid: 542994c2b742c814ebe41532f954a705, type: 3}
+  plantPrefab1: {fileID: 149635406583807255, guid: 8b72e24cd43345d45bf86bed9f4f726e, type: 3}
+  plantPrefab2: {fileID: 2716915402243683563, guid: a39068d59b0a6fc4e91827c3835d0948, type: 3}
+  plantPrefab3: {fileID: 1353672447567370210, guid: 1cce6e1fd1b93754f88b41589ab1587c, type: 3}
+  plantPrefab4: {fileID: 4606441292483203716, guid: 78b00e5839f8a7843858102794b17f65, type: 3}
+  plantPrefab5: {fileID: 6769476477686614448, guid: 9ee4460b8fdc9234c94d0983b3453422, type: 3}
 --- !u!114 &1512642184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8066,6 +8076,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642ed059a6f7c444d8f5cc2d518e553e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  startSound: {fileID: 0}
 --- !u!114 &2102579149
 MonoBehaviour:
   m_ObjectHideFlags: 0

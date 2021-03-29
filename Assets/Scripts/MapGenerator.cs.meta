@@ -3,7 +3,13 @@ guid: 71882f2d88a91f944bb795bb6a170af9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - topTile: {instanceID: 0}
+  - middleTile: {instanceID: 0}
+  - ruleTile: {instanceID: 0}
+  - grid: {instanceID: 0}
+  - starPrefab: {fileID: 8553951270721939149, guid: 5278ff30680ee6f41a43014c22cbb2ac, type: 3}
+  - sliderPrefab: {fileID: 2651322850232357336, guid: e886ac8bac149b6448c65744e2200192, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
