@@ -15,11 +15,13 @@ public class MapGenerator : MonoBehaviour
     private int lastY = 0;
     private string lastSection = "";
     private int lastPlantedX;
+    private bool noPlants;
 
     [SerializeField] Star starPrefab;
     [SerializeField] GameObject sliderPrefab;
     [SerializeField] GameObject elevatorPrefab;
     [SerializeField] GameObject boxPrefab;
+    [SerializeField] GameObject chasmPrefab;
     [SerializeField] GameObject treePrefab1;
     [SerializeField] GameObject treePrefab2;
     [SerializeField] GameObject plantPrefab1;
@@ -41,7 +43,7 @@ public class MapGenerator : MonoBehaviour
     {
         List<string> functions = new List<string>();
 
-        // functions.Add("Straight");
+        functions.Add("Straight");
         functions.Add("Gap");
         functions.Add("AngleUp");
         functions.Add("AngleDown");
@@ -49,8 +51,9 @@ public class MapGenerator : MonoBehaviour
         functions.Add("Pyramid");
         functions.Add("Elevator");
         functions.Add("BoxPush");
+        functions.Add("Platforms");
 
-        StartCoroutine(Straight());
+        StartCoroutine(StartSection());
         yield return null;
 
         for (int i = 0; i < 10; i++)
@@ -73,12 +76,14 @@ public class MapGenerator : MonoBehaviour
             lastSection = randomFunc;
             yield return null;
         }
+        StartCoroutine(End());
+
     }
 
     void addRandomTree(int x, int yOverride = -1)
     {
         int random = Random.Range(0, 100);
-        if (random > 60 && x > lastPlantedX + 2)
+        if (random > 50 && x > lastPlantedX + 2)
         {
             List<GameObject> plants = new List<GameObject>();
             plants.Add(treePrefab1);
@@ -110,7 +115,7 @@ public class MapGenerator : MonoBehaviour
     {
         for (int x = lastX; x < width + lastX; x++)
         {
-            if (x > lastX + 1 && x < width + lastX - 1)
+            if (x > lastX + 1 && x < width + lastX - 1 && !noPlants)
             {
 
                 addRandomTree(x);
@@ -127,7 +132,8 @@ public class MapGenerator : MonoBehaviour
     IEnumerator Gap()
     {
         StartCoroutine(Straight(6));
-        Instantiate(starPrefab, new Vector3(lastX + 2, -lastY + 4, 0), Quaternion.identity);
+        Instantiate(starPrefab, new Vector3(lastX + 2, -lastY + 5, 0), Quaternion.identity);
+        Instantiate(chasmPrefab, new Vector3(lastX + 2.5f, -lastY + .5f, 0), Quaternion.identity);
         lastX += 5;
         StartCoroutine(Straight(6));
         yield return null;
@@ -139,6 +145,9 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(Straight(5));
         GameObject slider = Instantiate(sliderPrefab, new Vector3(lastX + 2, -lastY + .75f, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         Instantiate(starPrefab, new Vector3(lastX + 5, -lastY + 3, 0), Quaternion.identity);
+        GameObject chasm = Instantiate(chasmPrefab, new Vector3(lastX + 2.5f, -lastY + .5f, 0), Quaternion.identity);
+        chasm.GetComponent<BoxCollider2D>().offset = new Vector2(2.5f, -4f);
+        chasm.GetComponent<BoxCollider2D>().size = new Vector2(12f, 1f);
         slider.GetComponent<SlideController>().end = new Vector2(lastX + 8, lastY + .75f);
         lastX += 10;
         StartCoroutine(Straight(5));
@@ -165,7 +174,7 @@ public class MapGenerator : MonoBehaviour
                 tilemap.SetTile(tilePos, ruleTile);
                 if (addStar)
                 {
-                    Instantiate(starPrefab, new Vector3(lastX + 8, -y + offset + 3, 0), Quaternion.identity);
+                    Instantiate(starPrefab, new Vector3(lastX + 9, -y + offset + 3, 0), Quaternion.identity);
                     addStar = false;
                 }
             }
@@ -189,7 +198,7 @@ public class MapGenerator : MonoBehaviour
 
         for (int x = lastX; x < width + lastX; x++)
         {
-            addStar = x == lastX + offset+ width / 2;
+            addStar = x == lastX + offset + width / 2;
             if (offset == heightChange && x > lastX + heightChange + 2 && x < width + lastX - 1)
             {
                 addRandomTree(x, lastY - offset);
@@ -221,9 +230,12 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(Straight(6));
         GameObject slider = Instantiate(elevatorPrefab, new Vector3(lastX + 2.5f, -lastY + .75f, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         slider.GetComponent<SlideController>().end = new Vector2(lastX + 2.5f, -lastY + 10.755f);
+        Instantiate(chasmPrefab, new Vector3(lastX + 2.5f, -lastY + .5f, 0), Quaternion.identity);
         lastY -= 10;
         lastX += 5;
-        StartCoroutine(Straight(6, 16));
+        StartCoroutine(Straight(7, 16));
+        Instantiate(starPrefab, new Vector3(lastX + 3, -lastY + 3, 0), Quaternion.identity);
+
         yield return null;
     }
 
@@ -243,6 +255,45 @@ public class MapGenerator : MonoBehaviour
 
     IEnumerator Platforms()
     {
+        noPlants = true;
+        // top platforms
+        int topCount = Mathf.RoundToInt(Random.Range(1, 3));
+        int xStart = lastX;
+        // mid platforms
+        lastY -= 8;
+        lastX += topCount == 1 ? 10 : 5;
+
+        StartCoroutine(Straight(5, 1));
+        if (topCount == 2)
+        {
+            int beforeAfter = Mathf.RoundToInt(Random.Range(0, 2));
+            lastX += 5;
+            StartCoroutine(Straight(5, 1));
+            Instantiate(starPrefab, new Vector3(lastX - 2.5f - (beforeAfter * 10), -lastY + 3, 0), Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(starPrefab, new Vector3(lastX - 2.5f, -lastY + 3, 0), Quaternion.identity);
+
+        }
+
+        // mid platforms
+        lastX -= 10;
+        lastY += 4;
+        StartCoroutine(Straight(5, 1));
+        if (topCount == 1)
+        {
+            lastX += 5;
+            StartCoroutine(Straight(5, 1));
+        }
+
+        noPlants = false;
+
+        // bottom
+        lastY += 4;
+        lastX = xStart;
+        StartCoroutine(Straight(23));
+
         yield return null;
     }
 
@@ -262,6 +313,39 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(Straight(5));
         lastY += 2;
         yield return null;
+    }
+
+    IEnumerator End()
+    {
+        StartCoroutine(Straight(8));
+
+        Vector3 starPos = new Vector3(lastX - 3, -lastY + 5, 0);
+        Star star = Instantiate(starPrefab, starPos, Quaternion.identity);
+        star.name = "LastStar";
+        GameManager.Instance.lastStarPosition = starPos;
+        lastY -= 8;
+        StartCoroutine(Straight(2, 16));
+        lastY -= 2;
+
+        for (int i = 0; i < 5; i++)
+        {
+            lastY -= 1;
+            StartCoroutine(Straight(1, 20 + i));
+        }
+        StartCoroutine(Straight(8, 20));
+
+        yield return null;
+
+    }
+
+    IEnumerator StartSection()
+    {
+        lastY -= 16;
+        StartCoroutine(Straight(12, 22));
+        lastY += 16;
+        StartCoroutine(Straight(8));
+        yield return null;
+
     }
 
 

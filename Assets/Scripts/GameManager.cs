@@ -11,15 +11,16 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public TextMeshProUGUI GameOverStarsText;
     public GameObject GameOver;
     private int starsGathered;
-    private int totalStars;
+    public Vector3 lastStarPosition;
     [SerializeField] private AudioClip yay;
+    [SerializeField] private GameObject confetti;
     [SerializeField] private AudioSource audioSource;
 
 
     void Start()
     {
+        GameOver.SetActive(false);
         StartCoroutine(SceneController.Instance.FadeOutAndIn(0f, 0f, .65f));
-        totalStars = GameObject.FindGameObjectsWithTag("Star").Length;
     }
 
 
@@ -46,15 +47,17 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         audioSource.Stop();
         audioSource.PlayOneShot(yay);
         GameOver.SetActive(true);
+        Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 12f, lastStarPosition.z), Quaternion.identity);
         GameOverStarsText.text = starsGathered + " stars collected!";
 
     }
 
     public void PlayAgain()
     {
+
+        starsGathered = 0;
         StartCoroutine(SceneController.Instance.FadeOutAndIn(.25f, .75f, .5f));
         SceneManager.LoadScene("Level1");
-
     }
 
 
