@@ -36,6 +36,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Bouncing(){
+        
+    }
+
     public void setFrozen(bool isFrozen)
     {
         frozen = isFrozen;

@@ -24,7 +24,7 @@ public class SceneController : SingletonMonobehaviour<SceneController>
         yield return new WaitForSeconds(waitInBetween);
         finalAlpha = 0;
         fadeSpeed = Mathf.Abs(faderCanvasGroup.alpha - finalAlpha) / fadeInDuration;
-
+    
         while (!Mathf.Approximately(faderCanvasGroup.alpha, finalAlpha))
         {
             faderCanvasGroup.alpha = Mathf.MoveTowards(faderCanvasGroup.alpha, finalAlpha, fadeSpeed * Time.deltaTime);
@@ -33,18 +33,29 @@ public class SceneController : SingletonMonobehaviour<SceneController>
 
 
         isFading = false;
-            yield return null;
+        yield return null;
 
     }
 
     public IEnumerator FadeOutAndIn(float fadeOutDuration = .25f, float fadeInDuration = .5f, float waitInBetween = .5f)
     {
-        Debug.Log("Fade");
         faderImage.color = new Color(0f, 0f, 0f, 1f);
 
         if (!isFading)
         {
             yield return StartCoroutine(Fade(fadeOutDuration, fadeInDuration, waitInBetween));
+        }
+    }
+
+    public IEnumerator FadeOut(float fadeOutDuration = .25f)
+    {
+        float finalAlpha = 1;
+        float fadeSpeed = Mathf.Abs(faderCanvasGroup.alpha - finalAlpha) / fadeOutDuration;
+
+        while (!Mathf.Approximately(faderCanvasGroup.alpha, finalAlpha))
+        {
+            faderCanvasGroup.alpha = Mathf.MoveTowards(faderCanvasGroup.alpha, finalAlpha, fadeSpeed * Time.deltaTime);
+            yield return null;
         }
     }
 }

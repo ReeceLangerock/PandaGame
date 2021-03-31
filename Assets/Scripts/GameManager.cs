@@ -13,6 +13,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     private int starsGathered;
     public Vector3 lastStarPosition;
     [SerializeField] private AudioClip yay;
+    [SerializeField] private AudioClip song2;
+    [SerializeField] private AudioClip song1;
     [SerializeField] private GameObject confetti;
     private GameObject confettiRef;
     [SerializeField] private AudioSource audioSource;
@@ -64,6 +66,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         Scene level1 = SceneManager.GetSceneByName("Level1");
 
         Destroy(confettiRef);
+        audioSource.Stop();
 
         if (level1.IsValid())
         {
@@ -71,10 +74,16 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         }
         else
         {
+            Debug.Log("unloading");
             SceneManager.UnloadSceneAsync("Level2");
         }
         SceneManager.LoadSceneAsync("Level2", LoadSceneMode.Additive);
-        StartCoroutine(SceneController.Instance.FadeOutAndIn(.5f, 1.75f, .75f));
+        StartCoroutine(SceneController.Instance.FadeOut(.25f));
+        int randomSong = Mathf.RoundToInt(Random.Range(0, 2));
+        AudioClip song = randomSong == 1 ? song1 : song2;
+        audioSource.clip = song;
+        audioSource.Play();
+
     }
 
 

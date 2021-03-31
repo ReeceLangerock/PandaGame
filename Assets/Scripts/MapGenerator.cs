@@ -21,6 +21,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Star starPrefab;
     [SerializeField] GameObject sliderPrefab;
     [SerializeField] GameObject elevatorPrefab;
+    [SerializeField] GameObject trampolinePrefab;
     [SerializeField] GameObject boxPrefab;
     [SerializeField] GameObject chasmPrefab;
     [SerializeField] GameObject treePrefab1;
@@ -40,6 +41,7 @@ public class MapGenerator : MonoBehaviour
         Scene level2 = SceneManager.GetSceneByName("Level2");
         SceneManager.SetActiveScene(level2);
         Player = GameObject.FindGameObjectsWithTag("Player")[0];
+        Background = GameObject.FindGameObjectsWithTag("Background")[0];
         mainCamera = Camera.main;
         tilemap = grid.GetComponentInChildren<Tilemap>();
         StartCoroutine(GenerateLevel());
@@ -50,9 +52,9 @@ public class MapGenerator : MonoBehaviour
         PlayerController pc = Player.GetComponent<PlayerController>();
         pc.setFrozen(true);
         Player.transform.position = new Vector3(15, 2, 0);
+       
         List<string> functions = new List<string>();
 
-        functions.Add("Straight");
         functions.Add("Gap");
         functions.Add("AngleUp");
         functions.Add("AngleDown");
@@ -61,11 +63,12 @@ public class MapGenerator : MonoBehaviour
         functions.Add("Elevator");
         functions.Add("BoxPush");
         functions.Add("Platforms");
+        functions.Add("Trampoline");
 
         StartCoroutine(StartSection());
         yield return null;
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i <10; i++)
         {
             int random = (int)Mathf.Floor(Random.Range(0, functions.Count));
             string randomFunc = functions[random];
@@ -84,9 +87,14 @@ public class MapGenerator : MonoBehaviour
             lastSection = randomFunc;
             yield return null;
         }
+         Parallax[] kids = Background.GetComponentsInChildren<Parallax>();
+        foreach (var kid in kids)
+        {
+            kid.Reset();
+        }
+        StartCoroutine(SceneController.Instance.FadeOutAndIn(0, .75f, 0));
         StartCoroutine(End());
         pc.setFrozen(false);
-
     }
 
     void addRandomTree(int x, int yOverride = -1)
@@ -106,7 +114,7 @@ public class MapGenerator : MonoBehaviour
             plants.Add(plantPrefab5);
             int y = yOverride != -1 ? -yOverride : -lastY;
             float randomScale = Random.Range(.5f, 1.2f);
-            int randomFlip = Mathf.RoundToInt(Random.Range(0, 1f));
+            int randomFlip = Mathf.RoundToInt(Random.Range(0, 2));
             GameObject randomPlant = plants[(int)Random.Range(0, plants.Count)];
             GameObject newPlant = Instantiate(randomPlant, new Vector3(x, y + .95f, 0), Quaternion.identity);
             newPlant.transform.localScale = new Vector3(randomScale, randomScale, 1);
@@ -120,7 +128,7 @@ public class MapGenerator : MonoBehaviour
     }
 
 
-    IEnumerator Straight(int width = 20, int height = 8)
+    IEnumerator Straight(int width = 20, int height = 12)
     {
         for (int x = lastX; x < width + lastX; x++)
         {
@@ -140,11 +148,11 @@ public class MapGenerator : MonoBehaviour
 
     IEnumerator Gap()
     {
-        StartCoroutine(Straight(6));
+        StartCoroutine(Straight(8));
         Instantiate(starPrefab, new Vector3(lastX + 2, -lastY + 5, 0), Quaternion.identity);
         Instantiate(chasmPrefab, new Vector3(lastX + 2.5f, -lastY + .5f, 0), Quaternion.identity);
         lastX += 5;
-        StartCoroutine(Straight(6));
+        StartCoroutine(Straight(8));
         yield return null;
     }
 
@@ -257,8 +265,8 @@ public class MapGenerator : MonoBehaviour
         Instantiate(boxPrefab, new Vector3(lastX + 4, -lastY + 2, 0), Quaternion.identity);
         StartCoroutine(Straight(10));
         lastY -= 5;
-        StartCoroutine(Straight(5, 18));
-        Instantiate(starPrefab, new Vector3(lastX - 1, -lastY + 3, 0), Quaternion.identity);
+        StartCoroutine(Straight(10, 18));
+        Instantiate(starPrefab, new Vector3(lastX - 4, -lastY + 3, 0), Quaternion.identity);
         yield return null;
     }
 
@@ -353,6 +361,19 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(Straight(12, 22));
         lastY += 16;
         StartCoroutine(Straight(8));
+        yield return null;
+
+    }
+
+     IEnumerator Trampoline()
+    {
+        StartCoroutine(Straight(6));
+        Instantiate(trampolinePrefab, new Vector3(lastX - 2.5f, -lastY + 1.3f, 0), Quaternion.identity);
+        lastY -= 12;
+        StartCoroutine(Straight(10, 26));
+        Instantiate(starPrefab, new Vector3(lastX -3, -lastY + 3, 0), Quaternion.identity);
+
+
         yield return null;
 
     }

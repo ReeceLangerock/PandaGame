@@ -6,6 +6,7 @@ TagManager:
   tags:
   - RespawnTrigger
   - Star
+  - Background
   layers:
   - Default
   - TransparentFX

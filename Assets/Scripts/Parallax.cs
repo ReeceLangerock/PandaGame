@@ -7,24 +7,30 @@ public class Parallax : MonoBehaviour
 
     [SerializeField] private Vector2 parallexEffectMultiplier;
     private Transform cameraTransform;
+    private Vector3 startPosition;
     private Vector3 lastCameraPosition;
     private float textureUnitSizeX;
     private float textureUnitSizeY;
     [SerializeField] bool infiniteHorizontal;
     [SerializeField] bool infiniteVertical;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        cameraTransform = Camera.main.transform;
+
+    void Awake(){
+        startPosition = gameObject.transform.position;
+    cameraTransform = Camera.main.transform;
         lastCameraPosition = cameraTransform.position;
         Sprite sprite = GetComponent<SpriteRenderer>().sprite;
         Texture2D texture = sprite.texture;
         textureUnitSizeX = texture.width / sprite.pixelsPerUnit;
         textureUnitSizeY = texture.height / sprite.pixelsPerUnit;
-
     }
-    
+
+    public void Reset()
+    {
+        Debug.Log(gameObject.name + "reseting to: "+ startPosition);
+        gameObject.transform.position = startPosition;
+    }
+
 
     // Update is called once per frame
     void LateUpdate()
