@@ -24,6 +24,7 @@ public class Parallax : MonoBehaviour
         textureUnitSizeY = texture.height / sprite.pixelsPerUnit;
 
     }
+    
 
     // Update is called once per frame
     void LateUpdate()

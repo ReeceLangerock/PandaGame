@@ -8,12 +8,13 @@ public class Star : MonoBehaviour
     [SerializeField] private Vector2 _end;
     Vector2 startPosition;
     [SerializeField] private AudioClip collected;
-    [SerializeField] private AudioSource audioSource;
+    private AudioSource audioSource;
     [SerializeField] private float _speed = 1f;
 
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = Camera.main.GetComponent<AudioSource>();
         _start = transform.position; ;
         _end = new Vector2(_start.x, _start.y + .2f);
     }

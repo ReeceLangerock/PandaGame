@@ -18,7 +18,8 @@ public class MenuHandler : MonoBehaviour
     {
         audioSource.PlayOneShot(startSound);
         new WaitForSeconds(.75f);
-        SceneManager.LoadSceneAsync("Level1");
+        SceneManager.LoadSceneAsync("PersistentScene");
+        SceneManager.LoadSceneAsync("Level1",  LoadSceneMode.Additive);
         yield return null;
     }
 

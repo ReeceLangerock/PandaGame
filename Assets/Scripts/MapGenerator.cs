@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -29,18 +30,26 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] GameObject plantPrefab3;
     [SerializeField] GameObject plantPrefab4;
     [SerializeField] GameObject plantPrefab5;
+    [SerializeField] private GameObject Player;
+    [SerializeField] private GameObject Background;
+    private Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
     {
+        Scene level2 = SceneManager.GetSceneByName("Level2");
+        SceneManager.SetActiveScene(level2);
+        Player = GameObject.FindGameObjectsWithTag("Player")[0];
+        mainCamera = Camera.main;
         tilemap = grid.GetComponentInChildren<Tilemap>();
-        Debug.Log("Tilemap");
         StartCoroutine(GenerateLevel());
-
     }
 
     IEnumerator GenerateLevel()
     {
+        PlayerController pc = Player.GetComponent<PlayerController>();
+        pc.setFrozen(true);
+        Player.transform.position = new Vector3(15, 2, 0);
         List<string> functions = new List<string>();
 
         functions.Add("Straight");
@@ -56,11 +65,10 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(StartSection());
         yield return null;
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
             int random = (int)Mathf.Floor(Random.Range(0, functions.Count));
             string randomFunc = functions[random];
-            Debug.Log("adding - " + randomFunc);
             if (randomFunc == "Straight" && lastSection == "Straight")
                 randomFunc = functions[random + 1];
 
@@ -77,6 +85,7 @@ public class MapGenerator : MonoBehaviour
             yield return null;
         }
         StartCoroutine(End());
+        pc.setFrozen(false);
 
     }
 
@@ -234,7 +243,7 @@ public class MapGenerator : MonoBehaviour
         lastY -= 10;
         lastX += 5;
         StartCoroutine(Straight(7, 16));
-        Instantiate(starPrefab, new Vector3(lastX + 3, -lastY + 3, 0), Quaternion.identity);
+        Instantiate(starPrefab, new Vector3(lastX - 1, -lastY + 3, 0), Quaternion.identity);
 
         yield return null;
     }
@@ -317,9 +326,9 @@ public class MapGenerator : MonoBehaviour
 
     IEnumerator End()
     {
-        StartCoroutine(Straight(8));
+        StartCoroutine(Straight(12));
 
-        Vector3 starPos = new Vector3(lastX - 3, -lastY + 5, 0);
+        Vector3 starPos = new Vector3(lastX - 2, -lastY + 5, 0);
         Star star = Instantiate(starPrefab, starPos, Quaternion.identity);
         star.name = "LastStar";
         GameManager.Instance.lastStarPosition = starPos;
@@ -347,22 +356,4 @@ public class MapGenerator : MonoBehaviour
         yield return null;
 
     }
-
-
-
-    // ??? 
-    // IEnumerator DoubleLoop(int xEnd, int yEnd)
-    // {
-    //     doneLooping = false;
-    //     for (int x = xEnd; x < xEnd + lastX; x++)
-    //     {
-    //         for (int y = yEnd; y < height + yEnd; y++)
-    //         {
-
-    //             yield return new Vector2(x, y);
-    //         }
-    //     }
-    //     doneLooping = true;
-    //     yield return null;
-    // }
 }

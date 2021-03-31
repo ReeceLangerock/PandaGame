@@ -15,24 +15,30 @@ public class PlayerController : MonoBehaviour
 
     bool facingRight = true;
     [SerializeField] float moveDirection = 0;
-    public Camera mainCamera;
+    private Camera mainCamera;
     Vector3 cameraPos;
     Transform t;
     bool frozen = false;
-        [SerializeField] private AudioClip falling;
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip falling;
+    private AudioSource audioSource;
 
 
     // Use this for initialization
     void Start()
     {
         frozen = false;
-
         t = transform;
+        mainCamera = Camera.main;
         if (mainCamera)
         {
+            audioSource = mainCamera.GetComponent<AudioSource>();
             cameraPos = mainCamera.transform.position;
         }
+    }
+
+    public void setFrozen(bool isFrozen)
+    {
+        frozen = isFrozen;
     }
 
     // Update is called once per frame
@@ -64,7 +70,7 @@ public class PlayerController : MonoBehaviour
         {
 
             jump = true;
-        animator.SetBool("isJumping", true);
+            animator.SetBool("isJumping", true);
         }
 
         if (Input.GetButtonDown("Crouch"))
@@ -78,7 +84,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnLanding(){
+    public void OnLanding()
+    {
         // Debug.Log("Onlanding");
         animator.SetBool("isJumping", false);
     }
@@ -103,7 +110,7 @@ public class PlayerController : MonoBehaviour
         audioSource.PlayOneShot(falling);
         frozen = true;
         horizontalMove = 0;
-        yield return StartCoroutine(SceneController.Instance.FadeOutAndIn(0f, 1.5f, .25f));
+        yield return StartCoroutine(SceneController.Instance.FadeOutAndIn(.25f, 1.75f, .25f));
         controller2D.transform.position = respawn.position;
         yield return new WaitForSeconds(1.75f);
         frozen = false;

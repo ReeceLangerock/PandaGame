@@ -14,6 +14,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public Vector3 lastStarPosition;
     [SerializeField] private AudioClip yay;
     [SerializeField] private GameObject confetti;
+    private GameObject confettiRef;
     [SerializeField] private AudioSource audioSource;
 
 
@@ -47,17 +48,33 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         audioSource.Stop();
         audioSource.PlayOneShot(yay);
         GameOver.SetActive(true);
-        Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 12f, lastStarPosition.z), Quaternion.identity);
+        Debug.Log(lastStarPosition);
+        if (lastStarPosition != null)
+        {
+            confettiRef = Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 12f, lastStarPosition.z), Quaternion.identity);
+        }
         GameOverStarsText.text = starsGathered + " stars collected!";
 
     }
 
     public void PlayAgain()
     {
-
         starsGathered = 0;
-        StartCoroutine(SceneController.Instance.FadeOutAndIn(.25f, .75f, .5f));
-        SceneManager.LoadScene("Level1");
+        GameOver.SetActive(false);
+        Scene level1 = SceneManager.GetSceneByName("Level1");
+
+        Destroy(confettiRef);
+
+        if (level1.IsValid())
+        {
+            SceneManager.UnloadSceneAsync("Level1");
+        }
+        else
+        {
+            SceneManager.UnloadSceneAsync("Level2");
+        }
+        SceneManager.LoadSceneAsync("Level2", LoadSceneMode.Additive);
+        StartCoroutine(SceneController.Instance.FadeOutAndIn(.5f, 1.75f, .75f));
     }
 
 

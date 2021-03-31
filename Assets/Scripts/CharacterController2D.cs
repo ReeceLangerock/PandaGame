@@ -13,7 +13,7 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
     [SerializeField] private AudioClip jumpSound;
     [SerializeField] private AudioClip landSound;
-    [SerializeField] private AudioSource audioSource;
+    private AudioSource audioSource;
 
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded = true;            // Whether or not the player is grounded.
@@ -32,6 +32,11 @@ public class CharacterController2D : MonoBehaviour
 
     public BoolEvent OnCrouchEvent;
     private bool m_wasCrouching = false;
+
+    void Start()
+    {
+        audioSource = Camera.main.GetComponent<AudioSource>();
+    }
 
     private void Awake()
     {
