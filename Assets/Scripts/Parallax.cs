@@ -27,7 +27,6 @@ public class Parallax : MonoBehaviour
 
     public void Reset()
     {
-        Debug.Log(gameObject.name + "reseting to: "+ startPosition);
         gameObject.transform.position = startPosition;
     }
 

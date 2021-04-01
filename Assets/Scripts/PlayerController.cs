@@ -36,10 +36,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Bouncing(){
-        
-    }
-
     public void setFrozen(bool isFrozen)
     {
         frozen = isFrozen;
@@ -90,7 +86,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnLanding()
     {
-        // Debug.Log("Onlanding");
         animator.SetBool("isJumping", false);
     }
 

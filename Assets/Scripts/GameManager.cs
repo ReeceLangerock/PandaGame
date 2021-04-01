@@ -50,7 +50,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         audioSource.Stop();
         audioSource.PlayOneShot(yay);
         GameOver.SetActive(true);
-        Debug.Log(lastStarPosition);
         if (lastStarPosition != null)
         {
             confettiRef = Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 12f, lastStarPosition.z), Quaternion.identity);
@@ -74,7 +73,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         }
         else
         {
-            Debug.Log("unloading");
             SceneManager.UnloadSceneAsync("Level2");
         }
         SceneManager.LoadSceneAsync("Level2", LoadSceneMode.Additive);
