@@ -55,7 +55,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         {
             confettiRef = Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 12f, lastStarPosition.z), Quaternion.identity);
         }
-        GameOverStarsText.text = starsGathered + " stars collected!";
+        GameOverStarsText.text = "You found " + starsGathered + " stars!";
 
     }
 

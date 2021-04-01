@@ -14,7 +14,6 @@ public class MapGenerator : MonoBehaviour
     private const int width = 20;
     private int lastX = 0;
     private int lastY = 0;
-    private string lastSection = "";
     private int lastPlantedX;
     private bool noPlants;
 
@@ -68,23 +67,12 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(StartSection());
         yield return null;
 
-        for (int i = 0; i <10; i++)
+        for (int i = 0; i < 20; i++)
         {
             int random = (int)Mathf.Floor(Random.Range(0, functions.Count));
             string randomFunc = functions[random];
-            if (randomFunc == "Straight" && lastSection == "Straight")
-                randomFunc = functions[random + 1];
+            StartCoroutine(randomFunc);
 
-            if (randomFunc == "Straight")
-            {
-                StartCoroutine(Straight());
-            }
-            else
-            {
-                StartCoroutine(randomFunc);
-            }
-
-            lastSection = randomFunc;
             yield return null;
         }
          Parallax[] kids = Background.GetComponentsInChildren<Parallax>();
