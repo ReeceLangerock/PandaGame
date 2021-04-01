@@ -266,13 +266,13 @@ public class MapGenerator : MonoBehaviour
         int xStart = lastX;
         // mid platforms
         lastY -= 8;
-        lastX += topCount == 1 ? 10 : 5;
+        lastX += topCount == 1 ? 11 : 6;
 
         StartCoroutine(Straight(5, 1));
         if (topCount == 2)
         {
             int beforeAfter = Mathf.RoundToInt(Random.Range(0, 2));
-            lastX += 5;
+            lastX += 7;
             StartCoroutine(Straight(5, 1));
             Instantiate(starPrefab, new Vector3(lastX - 2.5f - (beforeAfter * 10), -lastY + 3, 0), Quaternion.identity);
         }
@@ -283,12 +283,12 @@ public class MapGenerator : MonoBehaviour
         }
 
         // mid platforms
-        lastX -= 10;
+        lastX -= 11;
         lastY += 4;
         StartCoroutine(Straight(5, 1));
         if (topCount == 1)
         {
-            lastX += 5;
+            lastX += 7;
             StartCoroutine(Straight(5, 1));
         }
 
@@ -297,7 +297,7 @@ public class MapGenerator : MonoBehaviour
         // bottom
         lastY += 4;
         lastX = xStart;
-        StartCoroutine(Straight(23));
+        StartCoroutine(Straight(25));
 
         yield return null;
     }

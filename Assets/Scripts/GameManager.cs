@@ -10,9 +10,11 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public TextMeshProUGUI StarsText;
     public TextMeshProUGUI GameOverStarsText;
     public GameObject GameOver;
+    public GameObject Quit;
     private int starsGathered;
     public Vector3 lastStarPosition;
     [SerializeField] private AudioClip yay;
+    [SerializeField] private AudioClip continueSound;
     [SerializeField] private AudioClip song2;
     [SerializeField] private AudioClip song1;
     [SerializeField] private GameObject confetti;
@@ -26,6 +28,27 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         StartCoroutine(SceneController.Instance.FadeOutAndIn(0f, 0f, .65f));
     }
 
+    void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            StarsText.enabled = false;
+            Quit.SetActive(true);
+        }
+    }
+
+    public void handleQuit()
+    {
+        Application.Quit();
+
+    }
+
+    public void handleCancel()
+    {
+        StarsText.enabled = true;
+        Quit.SetActive(false);
+        audioSource.PlayOneShot(continueSound);
+    }
 
     public void IncrementStarsGathered(bool isLastStar)
     {
@@ -61,6 +84,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public void PlayAgain()
     {
         starsGathered = 0;
+        StarsText.text = "Stars: " + starsGathered;
         GameOver.SetActive(false);
         Scene level1 = SceneManager.GetSceneByName("Level1");
 
@@ -79,6 +103,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         StartCoroutine(SceneController.Instance.FadeOut(.25f));
         int randomSong = Mathf.RoundToInt(Random.Range(0, 2));
         AudioClip song = randomSong == 1 ? song1 : song2;
+        StarsText.enabled = true;
         audioSource.clip = song;
         audioSource.Play();
 

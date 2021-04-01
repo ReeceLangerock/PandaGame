@@ -109,9 +109,9 @@ public class PlayerController : MonoBehaviour
         audioSource.PlayOneShot(falling);
         frozen = true;
         horizontalMove = 0;
-        yield return StartCoroutine(SceneController.Instance.FadeOutAndIn(.25f, 1.75f, .25f));
+        yield return StartCoroutine(SceneController.Instance.FadeOutAndIn(.15f, 1.75f, .25f));
         controller2D.transform.position = respawn.position;
-        yield return new WaitForSeconds(1.75f);
+        yield return new WaitForSeconds(2f);
         frozen = false;
     }
 }
