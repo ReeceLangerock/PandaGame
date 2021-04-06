@@ -31,7 +31,13 @@ public class Star : MonoBehaviour
     {
         if (other.GetType() != typeof(CircleCollider2D))
         {
+
             bool isLastStar = gameObject.name == "LastStar";
+            if (isLastStar)
+            {
+                GameManager.Instance.lastStarPosition = gameObject.transform.position;
+
+            }
             audioSource.PlayOneShot(collected);
             GameManager.Instance.IncrementStarsGathered(isLastStar);
             Destroy(gameObject);

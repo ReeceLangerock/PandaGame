@@ -24,6 +24,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     void Start()
     {
+        Cursor.visible = false;
         GameOver.SetActive(false);
         StartCoroutine(SceneController.Instance.FadeOutAndIn(0f, 0f, .65f));
     }
@@ -32,6 +33,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         if (Input.GetButtonDown("Cancel"))
         {
+            Cursor.visible = true;
             StarsText.enabled = false;
             Quit.SetActive(true);
         }
@@ -45,6 +47,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     public void handleCancel()
     {
+        Cursor.visible = false;
         StarsText.enabled = true;
         Quit.SetActive(false);
         audioSource.PlayOneShot(continueSound);
@@ -69,10 +72,12 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     private void HandleEndGame()
     {
+        Quit.SetActive(false);
         StarsText.enabled = false;
         audioSource.Stop();
         audioSource.PlayOneShot(yay);
         GameOver.SetActive(true);
+        Debug.Log(lastStarPosition);
         if (lastStarPosition != null)
         {
             confettiRef = Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 12f, lastStarPosition.z), Quaternion.identity);

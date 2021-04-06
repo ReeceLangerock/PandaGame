@@ -32,6 +32,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] GameObject plantPrefab5;
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject Background;
+    private Rigidbody2D m_Rigidbody2D;
     private Camera mainCamera;
 
     // Start is called before the first frame update
@@ -44,14 +45,17 @@ public class MapGenerator : MonoBehaviour
         mainCamera = Camera.main;
         tilemap = grid.GetComponentInChildren<Tilemap>();
         StartCoroutine(GenerateLevel());
+
     }
 
     IEnumerator GenerateLevel()
     {
         PlayerController pc = Player.GetComponent<PlayerController>();
+        m_Rigidbody2D = Player.GetComponent<Rigidbody2D>();
+        m_Rigidbody2D.gravityScale = 0;
         pc.setFrozen(true);
         Player.transform.position = new Vector3(15, 2, 0);
-       
+
         List<string> functions = new List<string>();
 
         functions.Add("Gap");
@@ -75,13 +79,15 @@ public class MapGenerator : MonoBehaviour
 
             yield return null;
         }
-         Parallax[] kids = Background.GetComponentsInChildren<Parallax>();
+        Parallax[] kids = Background.GetComponentsInChildren<Parallax>();
         foreach (var kid in kids)
         {
             kid.Reset();
         }
         StartCoroutine(SceneController.Instance.FadeOutAndIn(0, .75f, 0));
         StartCoroutine(End());
+        m_Rigidbody2D.gravityScale = 3;
+
         pc.setFrozen(false);
     }
 
@@ -353,13 +359,13 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-     IEnumerator Trampoline()
+    IEnumerator Trampoline()
     {
         StartCoroutine(Straight(6));
         Instantiate(trampolinePrefab, new Vector3(lastX - 2.5f, -lastY + 1.3f, 0), Quaternion.identity);
         lastY -= 12;
         StartCoroutine(Straight(10, 26));
-        Instantiate(starPrefab, new Vector3(lastX -3, -lastY + 3, 0), Quaternion.identity);
+        Instantiate(starPrefab, new Vector3(lastX - 3, -lastY + 3, 0), Quaternion.identity);
 
 
         yield return null;
