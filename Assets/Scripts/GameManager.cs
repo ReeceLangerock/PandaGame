@@ -73,6 +73,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     private void HandleEndGame()
     {
         Quit.SetActive(false);
+        Cursor.visible = true;
         StarsText.enabled = false;
         audioSource.Stop();
         audioSource.PlayOneShot(yay);
@@ -88,9 +89,12 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     public void PlayAgain()
     {
+
         starsGathered = 0;
         StarsText.text = "Stars: " + starsGathered;
         GameOver.SetActive(false);
+        Cursor.visible = false;
+
         Scene level1 = SceneManager.GetSceneByName("Level1");
 
         Destroy(confettiRef);
@@ -111,6 +115,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         StarsText.enabled = true;
         audioSource.clip = song;
         audioSource.Play();
+
 
     }
 
