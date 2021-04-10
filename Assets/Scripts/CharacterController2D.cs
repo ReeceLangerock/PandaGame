@@ -14,6 +14,7 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private AudioClip jumpSound;
     [SerializeField] private AudioClip landSound;
     private AudioSource audioSource;
+    private ParticleSystem clouds;
 
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded = true;            // Whether or not the player is grounded.
@@ -42,6 +43,7 @@ public class CharacterController2D : MonoBehaviour
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_Rigidbody2D.gravityScale = 3;
+        clouds = transform.GetComponentInChildren<ParticleSystem>();
 
         if (OnLandEvent == null)
             OnLandEvent = new UnityEvent();
@@ -155,5 +157,10 @@ public class CharacterController2D : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+        Vector3 cloudsScale = clouds.transform.localScale;
+        Transform cloudTransform = clouds.transform;
+        cloudsScale.x = 1;
+        clouds.transform.position = new Vector3(transform.position.x + 40f, clouds.transform.position.y, clouds.transform.position.z); 
+        clouds.transform.localScale = cloudsScale;
     }
 }

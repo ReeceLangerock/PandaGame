@@ -78,7 +78,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         audioSource.Stop();
         audioSource.PlayOneShot(yay);
         GameOver.SetActive(true);
-        Debug.Log(lastStarPosition);
         if (lastStarPosition != null)
         {
             confettiRef = Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 12f, lastStarPosition.z), Quaternion.identity);
