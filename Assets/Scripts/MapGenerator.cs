@@ -50,11 +50,12 @@ public class MapGenerator : MonoBehaviour
 
     IEnumerator GenerateLevel()
     {
+        Time.timeScale = 0;
         PlayerController pc = Player.GetComponent<PlayerController>();
         m_Rigidbody2D = Player.GetComponent<Rigidbody2D>();
         m_Rigidbody2D.gravityScale = 0;
         pc.setFrozen(true);
-        Player.transform.position = new Vector3(15, 2, 0);
+        Player.transform.position = new Vector3(15, 5, 0);
 
         List<string> functions = new List<string>();
 
@@ -89,6 +90,8 @@ public class MapGenerator : MonoBehaviour
         m_Rigidbody2D.gravityScale = 3;
 
         pc.setFrozen(false);
+        Time.timeScale = 1;
+
     }
 
     void addRandomTree(int x, int yOverride = -1)

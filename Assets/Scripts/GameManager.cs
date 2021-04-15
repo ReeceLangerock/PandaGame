@@ -80,7 +80,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         GameOver.SetActive(true);
         if (lastStarPosition != null)
         {
-            confettiRef = Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 12f, lastStarPosition.z), Quaternion.identity);
+            confettiRef = Instantiate(confetti, new Vector3(lastStarPosition.x, lastStarPosition.y + 11f, lastStarPosition.z), Quaternion.identity);
         }
         GameOverStarsText.text = "You found " + starsGathered + " stars!";
 
@@ -98,6 +98,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
         Destroy(confettiRef);
         audioSource.Stop();
+
 
         if (level1.IsValid())
         {

@@ -42,7 +42,6 @@ public class CharacterController2D : MonoBehaviour
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
-        m_Rigidbody2D.gravityScale = 3;
         clouds = transform.GetComponentInChildren<ParticleSystem>();
 
         if (OnLandEvent == null)

@@ -107,7 +107,7 @@ ScriptedImporter:
     vertices: []
     spritePhysicsOutline:
     - outline:
-      - {x: -11, y: -32}
+      - {x: -22, y: -32}
       - {x: -32, y: 10}
       - {x: -32, y: 32}
       - {x: 32, y: 31}
@@ -139,7 +139,7 @@ ScriptedImporter:
       - {x: -31, y: 31}
       - {x: 32, y: 32}
       - {x: 32, y: 8}
-      - {x: 13, y: -32}
+      - {x: 22, y: -32}
     indices: 
     edges: []
     tessellationDetail: 0
@@ -295,7 +295,7 @@ ScriptedImporter:
     vertices: []
     spritePhysicsOutline:
     - outline:
-      - {x: -12, y: -32}
+      - {x: -22, y: -32}
       - {x: -32, y: 10}
       - {x: -32, y: 32}
       - {x: 32, y: 31}
@@ -367,8 +367,8 @@ ScriptedImporter:
     vertices: []
     spritePhysicsOutline:
     - outline:
-      - {x: -24, y: -32}
-      - {x: -24, y: 32}
+      - {x: -26, y: -32}
+      - {x: -26, y: 32}
       - {x: 32, y: 32}
       - {x: 32, y: -32}
     indices: 
@@ -396,8 +396,8 @@ ScriptedImporter:
     - outline:
       - {x: -32, y: -32}
       - {x: -32, y: 32}
-      - {x: 25, y: 32}
-      - {x: 24, y: -32}
+      - {x: 26, y: 32}
+      - {x: 26, y: -32}
     indices: 
     edges: []
     tessellationDetail: 0
@@ -423,9 +423,9 @@ ScriptedImporter:
     - outline:
       - {x: -32, y: -32}
       - {x: -32, y: 32}
-      - {x: 32, y: 31}
+      - {x: 32, y: 32}
       - {x: 32, y: 10}
-      - {x: 11, y: -32}
+      - {x: 24, y: -32}
     indices: 
     edges: []
     tessellationDetail: 0
