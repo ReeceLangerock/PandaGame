@@ -72,7 +72,7 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(StartSection());
         yield return null;
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 8; i++)
         {
             int random = (int)Mathf.Floor(Random.Range(0, functions.Count));
             string randomFunc = functions[random];
@@ -146,10 +146,14 @@ public class MapGenerator : MonoBehaviour
     IEnumerator Gap()
     {
         StartCoroutine(Straight(8));
-        Instantiate(starPrefab, new Vector3(lastX + 2, -lastY + 5, 0), Quaternion.identity);
+        Instantiate(starPrefab, new Vector3(lastX + 2, -lastY + 5.5f, 0), Quaternion.identity);
         Instantiate(chasmPrefab, new Vector3(lastX + 2.5f, -lastY + .5f, 0), Quaternion.identity);
-        lastX += 5;
+
+        lastY += 4;
+        StartCoroutine(Straight(5));
+        lastY -= 4;
         StartCoroutine(Straight(8));
+
         yield return null;
     }
 
@@ -158,12 +162,15 @@ public class MapGenerator : MonoBehaviour
 
         StartCoroutine(Straight(5));
         GameObject slider = Instantiate(sliderPrefab, new Vector3(lastX + 2, -lastY + .75f, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
-        Instantiate(starPrefab, new Vector3(lastX + 5, -lastY + 3, 0), Quaternion.identity);
+        Instantiate(starPrefab, new Vector3(lastX + 5, -lastY + 5.5f, 0), Quaternion.identity);
         GameObject chasm = Instantiate(chasmPrefab, new Vector3(lastX + 2.5f, -lastY + .5f, 0), Quaternion.identity);
         chasm.GetComponent<BoxCollider2D>().offset = new Vector2(2.5f, -4f);
         chasm.GetComponent<BoxCollider2D>().size = new Vector2(12f, 1f);
         slider.GetComponent<SlideController>().end = new Vector2(lastX + 8, lastY + .75f);
-        lastX += 10;
+        lastY += 4;
+        StartCoroutine(Straight(10));
+        lastY -= 4;
+
         StartCoroutine(Straight(5));
         yield return null;
 
