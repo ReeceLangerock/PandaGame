@@ -1,6 +1,8 @@
 # PandaGame
 
-This is the result of a detour into game development with C# and Unity.
+This is the result of a detour into game development with C# and Unity. 
+
+### Need to update readme further
 
 In this 2d platformer inspired by a popular children's video series, you help baby panda find the missing stars.
 
